@@ -7,6 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using Newtonsoft.Json;
+using MySql.Data;
+using MySql.Data.MySqlClient;
+using System.Data.Common;
 
 namespace WinTools
 {
@@ -17,15 +22,36 @@ namespace WinTools
 
             InitializeComponent();
             Base64Combobox.SelectedIndex = 0;
-        }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+            //读取文件中的配置项
+            var filename = AppDomain.CurrentDomain.BaseDirectory + "datebaseconfig.txt";
+            if (File.Exists(filename))
+            {
+                var text = File.ReadAllText(filename);
+                var list = new List<Datebasemodel>();
+                if (text.Length > 0)
+                {
+                    try
+                    {
+                        list = JsonConvert.DeserializeObject<List<Datebasemodel>>(text);
+                    }
+                    catch { }
+                    if (list.Count() > 0)
+                    {
+                        var arr = list.OrderByDescending(x => x.Addtime);
+                        this.Name.Items.AddRange(arr.Select(x => x.Name).ToArray());
 
-        }
+                        var choose = arr.First();
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
+                        this.Dbtype.SelectedIndex = this.Dbtype.Items.IndexOf(choose.Dbtype.ToString());
+                        this.Dbip.Text = choose.Dbip;
+                        this.Dbport.Text = choose.Dbport;
+                        this.Useraccount.Text = choose.Useraccount;
+                        this.Userpassword.Text = choose.Userpassword;
+                        this.Name.SelectedIndex = this.Name.Items.IndexOf(choose.Name);
+                    }
+                }
+            }
 
         }
 
@@ -47,7 +73,7 @@ namespace WinTools
                 string res = Des.Encrypt(intext, key);
                 DesResultRichText.Text = res;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DesResultRichText.Text = ex.Message;
             }
@@ -63,7 +89,7 @@ namespace WinTools
                 string res = Des.Decrypt(intext, key);
                 DesResultRichText.Text = res;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DesResultRichText.Text = ex.Message;
             }
@@ -286,14 +312,67 @@ namespace WinTools
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void addconfig_Click(object sender, EventArgs e)
         {
+            Form2 form2 = new Form2();
+            form2.Show();
+        }
 
+        private void consql_Click(object sender, EventArgs e)
+        {
+            var model = new Datebasemodel();
+            model.Dbip = Dbip.Text;
+            model.Dbport = Dbport.Text;
+            model.Dbtype = Dbtype.Text;
+            model.Useraccount = Useraccount.Text;
+            model.Userpassword = Userpassword.Text;
+
+            DbConnection conn = GetConnByType(model);
+            if (conn == null)
+            {
+                MessageBox.Show("链接失败");
+            }
+            else
+            {
+                MessageBox.Show("链接成功");
+            }
+        }
+
+        private DbConnection GetConnByType(Datebasemodel model)
+        {
+            var strconn = string.Empty;
+            switch (model.Dbtype)
+            {
+                case "Mysql":
+                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
+                    try
+                    {
+                        var a= new MySqlConnection(strconn);
+                        a.Open();
+                        a.Close();
+                        return a;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                  
+                default:
+                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
+                    try
+                    {
+                        var a = new MySqlConnection(strconn);
+                        a.Open();
+                        a.Close();
+                        return a;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+
+            }
         }
     }
 }

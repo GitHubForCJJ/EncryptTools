@@ -1,0 +1,11 @@
+﻿[
+	{
+		"Dbip":"localhost",
+		"Dbport":"3306",
+		"Useraccount":"root",
+		"Userpassword":"cjj123",
+		"Dbname":"blog",
+		"Dbtype":"Mysql",
+		"Name":"博客数据库"
+	}
+]

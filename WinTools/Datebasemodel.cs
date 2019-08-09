@@ -20,5 +20,6 @@ namespace WinTools
         public string Dbtype { get; set; }
         //配置名称
         public string Name { get; set; }
+        public DateTime Addtime { get; set; }
     }
 }
