@@ -90,7 +90,7 @@
             this.Dbtype.FormattingEnabled = true;
             this.Dbtype.Items.AddRange(new object[] {
             "Mysql",
-            "Sqlserver"});
+            "SqlServer"});
             this.Dbtype.Location = new System.Drawing.Point(107, 64);
             this.Dbtype.Name = "Dbtype";
             this.Dbtype.Size = new System.Drawing.Size(195, 20);
@@ -223,6 +223,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Name);
             this.Controls.Add(this.label1);
+
             this.Text = "Adddb";
             this.Load += new System.EventHandler(this.Adddb_Load);
             this.ResumeLayout(false);
