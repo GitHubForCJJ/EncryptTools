@@ -65,9 +65,11 @@
             this.CreateTable = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.Isdrop = new System.Windows.Forms.CheckBox();
+            this.Createtablebtn = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.Resultrich = new System.Windows.Forms.RichTextBox();
-            this.c = new System.Windows.Forms.RichTextBox();
+            this.tableinfo = new System.Windows.Forms.RichTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.addconfig = new System.Windows.Forms.Button();
             this.consql = new System.Windows.Forms.Button();
@@ -83,6 +85,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.Name = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.Dbname = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.DES.SuspendLayout();
             this.MD5.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -107,7 +111,7 @@
             this.DES.Location = new System.Drawing.Point(4, 26);
             this.DES.Name = "DES";
             this.DES.Padding = new System.Windows.Forms.Padding(3);
-            this.DES.Size = new System.Drawing.Size(992, 628);
+            this.DES.Size = new System.Drawing.Size(1170, 628);
             this.DES.TabIndex = 1;
             this.DES.Text = "DES";
             this.DES.UseVisualStyleBackColor = true;
@@ -200,7 +204,7 @@
             this.MD5.Location = new System.Drawing.Point(4, 26);
             this.MD5.Name = "MD5";
             this.MD5.Padding = new System.Windows.Forms.Padding(3);
-            this.MD5.Size = new System.Drawing.Size(992, 628);
+            this.MD5.Size = new System.Drawing.Size(1170, 628);
             this.MD5.TabIndex = 0;
             this.MD5.Text = "MD5";
             this.MD5.UseVisualStyleBackColor = true;
@@ -277,7 +281,7 @@
             this.tabControl1.Location = new System.Drawing.Point(1, 1);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1000, 658);
+            this.tabControl1.Size = new System.Drawing.Size(1178, 658);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -293,7 +297,7 @@
             this.Base64.Location = new System.Drawing.Point(4, 26);
             this.Base64.Name = "Base64";
             this.Base64.Padding = new System.Windows.Forms.Padding(3);
-            this.Base64.Size = new System.Drawing.Size(992, 628);
+            this.Base64.Size = new System.Drawing.Size(1170, 628);
             this.Base64.TabIndex = 2;
             this.Base64.Text = "Base64";
             this.Base64.UseVisualStyleBackColor = true;
@@ -380,7 +384,7 @@
             this.SHA1.Location = new System.Drawing.Point(4, 26);
             this.SHA1.Name = "SHA1";
             this.SHA1.Padding = new System.Windows.Forms.Padding(3);
-            this.SHA1.Size = new System.Drawing.Size(992, 628);
+            this.SHA1.Size = new System.Drawing.Size(1170, 628);
             this.SHA1.TabIndex = 3;
             this.SHA1.Text = "SHA1";
             this.SHA1.UseVisualStyleBackColor = true;
@@ -432,7 +436,7 @@
             this.JSON.Location = new System.Drawing.Point(4, 26);
             this.JSON.Name = "JSON";
             this.JSON.Padding = new System.Windows.Forms.Padding(3);
-            this.JSON.Size = new System.Drawing.Size(992, 628);
+            this.JSON.Size = new System.Drawing.Size(1170, 628);
             this.JSON.TabIndex = 4;
             this.JSON.Text = "JSON";
             this.JSON.UseVisualStyleBackColor = true;
@@ -468,6 +472,8 @@
             // 
             // CreateTable
             // 
+            this.CreateTable.Controls.Add(this.Dbname);
+            this.CreateTable.Controls.Add(this.label16);
             this.CreateTable.Controls.Add(this.tabControl2);
             this.CreateTable.Controls.Add(this.addconfig);
             this.CreateTable.Controls.Add(this.consql);
@@ -487,7 +493,7 @@
             this.CreateTable.Location = new System.Drawing.Point(4, 26);
             this.CreateTable.Name = "CreateTable";
             this.CreateTable.Padding = new System.Windows.Forms.Padding(3);
-            this.CreateTable.Size = new System.Drawing.Size(992, 628);
+            this.CreateTable.Size = new System.Drawing.Size(1170, 628);
             this.CreateTable.TabIndex = 5;
             this.CreateTable.Text = "建表";
             this.CreateTable.UseVisualStyleBackColor = true;
@@ -501,21 +507,43 @@
             this.tabControl2.Location = new System.Drawing.Point(15, 69);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(949, 553);
+            this.tabControl2.Size = new System.Drawing.Size(1146, 553);
             this.tabControl2.TabIndex = 14;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.Isdrop);
+            this.tabPage1.Controls.Add(this.Createtablebtn);
             this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.Resultrich);
-            this.tabPage1.Controls.Add(this.c);
+            this.tabPage1.Controls.Add(this.tableinfo);
             this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(941, 521);
+            this.tabPage1.Size = new System.Drawing.Size(1138, 521);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "方式一单表";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // Isdrop
+            // 
+            this.Isdrop.AutoSize = true;
+            this.Isdrop.Location = new System.Drawing.Point(961, 420);
+            this.Isdrop.Name = "Isdrop";
+            this.Isdrop.Size = new System.Drawing.Size(171, 23);
+            this.Isdrop.TabIndex = 17;
+            this.Isdrop.Text = "若表已存在，是否先删除";
+            this.Isdrop.UseVisualStyleBackColor = true;
+            // 
+            // Createtablebtn
+            // 
+            this.Createtablebtn.Location = new System.Drawing.Point(998, 458);
+            this.Createtablebtn.Name = "Createtablebtn";
+            this.Createtablebtn.Size = new System.Drawing.Size(95, 35);
+            this.Createtablebtn.TabIndex = 16;
+            this.Createtablebtn.Text = "创建数据表";
+            this.Createtablebtn.UseVisualStyleBackColor = true;
+            this.Createtablebtn.Click += new System.EventHandler(this.Createtablebtn_Click);
             // 
             // label15
             // 
@@ -534,27 +562,27 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Resultrich.Location = new System.Drawing.Point(94, 418);
             this.Resultrich.Name = "Resultrich";
-            this.Resultrich.Size = new System.Drawing.Size(841, 96);
+            this.Resultrich.Size = new System.Drawing.Size(842, 96);
             this.Resultrich.TabIndex = 1;
             this.Resultrich.Text = "";
             // 
-            // c
+            // tableinfo
             // 
-            this.c.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tableinfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.c.Location = new System.Drawing.Point(6, 6);
-            this.c.Name = "c";
-            this.c.Size = new System.Drawing.Size(929, 394);
-            this.c.TabIndex = 0;
-            this.c.Text = "";
+            this.tableinfo.Location = new System.Drawing.Point(6, 6);
+            this.tableinfo.Name = "tableinfo";
+            this.tableinfo.Size = new System.Drawing.Size(1126, 394);
+            this.tableinfo.TabIndex = 0;
+            this.tableinfo.Text = "";
             // 
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(941, 521);
+            this.tabPage3.Size = new System.Drawing.Size(1138, 521);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "方式二导入excel";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -573,7 +601,7 @@
             // consql
             // 
             this.consql.Font = new System.Drawing.Font("宋体", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.consql.Location = new System.Drawing.Point(896, 23);
+            this.consql.Location = new System.Drawing.Point(1070, 24);
             this.consql.Name = "consql";
             this.consql.Size = new System.Drawing.Size(87, 27);
             this.consql.TabIndex = 12;
@@ -583,7 +611,7 @@
             // 
             // Userpassword
             // 
-            this.Userpassword.Location = new System.Drawing.Point(797, 23);
+            this.Userpassword.Location = new System.Drawing.Point(971, 23);
             this.Userpassword.Name = "Userpassword";
             this.Userpassword.Size = new System.Drawing.Size(84, 25);
             this.Userpassword.TabIndex = 11;
@@ -593,7 +621,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("宋体", 9F);
-            this.label14.Location = new System.Drawing.Point(756, 30);
+            this.label14.Location = new System.Drawing.Point(930, 30);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(29, 12);
             this.label14.TabIndex = 10;
@@ -644,7 +672,7 @@
             // 
             // Useraccount
             // 
-            this.Useraccount.Location = new System.Drawing.Point(654, 23);
+            this.Useraccount.Location = new System.Drawing.Point(828, 23);
             this.Useraccount.Name = "Useraccount";
             this.Useraccount.Size = new System.Drawing.Size(96, 25);
             this.Useraccount.TabIndex = 5;
@@ -654,7 +682,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("宋体", 9F);
-            this.label11.Location = new System.Drawing.Point(613, 30);
+            this.label11.Location = new System.Drawing.Point(787, 30);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(29, 12);
             this.label11.TabIndex = 4;
@@ -699,12 +727,30 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "配置";
             // 
+            // Dbname
+            // 
+            this.Dbname.Location = new System.Drawing.Point(661, 24);
+            this.Dbname.Name = "Dbname";
+            this.Dbname.Size = new System.Drawing.Size(96, 25);
+            this.Dbname.TabIndex = 16;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("宋体", 9F);
+            this.label16.Location = new System.Drawing.Point(614, 31);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(41, 12);
+            this.label16.TabIndex = 15;
+            this.label16.Text = "数据库";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 650);
+            this.ClientSize = new System.Drawing.Size(1178, 650);
             this.Controls.Add(this.tabControl1);
+            this.Name = "Form1";
             this.Text = "常用开发工具";
             this.DES.ResumeLayout(false);
             this.DES.PerformLayout();
@@ -781,7 +827,11 @@
         public System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.RichTextBox Resultrich;
-        private System.Windows.Forms.RichTextBox c;
+        private System.Windows.Forms.RichTextBox tableinfo;
+        private System.Windows.Forms.Button Createtablebtn;
+        private System.Windows.Forms.CheckBox Isdrop;
+        private System.Windows.Forms.TextBox Dbname;
+        private System.Windows.Forms.Label label16;
     }
 }
 

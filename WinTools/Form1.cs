@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data.Common;
+using WinTools.Comon;
 
 namespace WinTools
 {
@@ -328,7 +329,7 @@ namespace WinTools
             model.Useraccount = Useraccount.Text;
             model.Userpassword = Userpassword.Text;
 
-            DbConnection conn = GetConnByType(model);
+            DbConnection conn = CreateTableLogic.GetConnByType(model);
             if (conn == null)
             {
                 MessageBox.Show("链接失败");
@@ -339,40 +340,29 @@ namespace WinTools
             }
         }
 
-        private DbConnection GetConnByType(Datebasemodel model)
-        {
-            var strconn = string.Empty;
-            switch (model.Dbtype)
-            {
-                case "Mysql":
-                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
-                    try
-                    {
-                        var a= new MySqlConnection(strconn);
-                        a.Open();
-                        a.Close();
-                        return a;
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                  
-                default:
-                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
-                    try
-                    {
-                        var a = new MySqlConnection(strconn);
-                        a.Open();
-                        a.Close();
-                        return a;
-                    }
-                    catch
-                    {
-                        return null;
-                    }
 
+
+        private void Createtablebtn_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.tableinfo.Text))
+            {
+                MessageBox.Show("表信息为空");
+                return;
             }
+            if (MessageBox.Show("是否立即执行？", "提示信息", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            {
+                return;
+            }
+            var allinfo = this.tableinfo.Text.Split(new char[] { '\n'},StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            var model = new Datebasemodel();
+            model.Dbtype = this.Dbtype.SelectedText;
+            model.Dbip = this.Dbip.Text;
+            model.Dbname=this.db
+
+            CreateTableLogic.CreateTble(allinfo, true, new Datebasemodel());
+
+
         }
     }
 }

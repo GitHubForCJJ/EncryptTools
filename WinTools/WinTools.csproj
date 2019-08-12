@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastDev.Common">
+      <HintPath>..\dll\FastDev.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="FastDev.WCF">
+      <HintPath>..\dll\FastDev.WCF.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.8.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.8.8\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
@@ -51,13 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comon\CreateTableLogic.cs" />
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Datebasemodel.cs" />
+    <Compile Include="Models\Datebasemodel.cs" />
     <Compile Include="dbconfig.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -75,6 +82,8 @@
     </Compile>
     <Compile Include="Encrypt\GZipString.cs" />
     <Compile Include="Encrypt\Md5.cs" />
+    <Compile Include="Models\TableColumn.cs" />
+    <Compile Include="Models\TableInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Encrypt\SHA1.cs" />
