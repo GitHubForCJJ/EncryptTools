@@ -18,6 +18,12 @@ namespace WinTools
         {
             InitializeComponent();
         }
+        public Form2(Form1 f1)
+        {
+            form1 = f1;
+            InitializeComponent();
+        }
+        private Form1 form1;
 
         private void Adddb_Load(object sender, EventArgs e)
         {
@@ -28,7 +34,7 @@ namespace WinTools
         {
             var db = new Datebasemodel();
             db.Dbip = Dbip.Text;
-            db.Dbtype = Dbtype.SelectedText;
+            db.Dbtype = Dbtype.SelectedItem.ToString();
             db.Dbname = Dbname.Text;
             db.Dbport = Dbport.Text;
             db.Useraccount = Useraccount.Text;
@@ -53,11 +59,24 @@ namespace WinTools
                 list.Add(db);
                 var insertstr = JsonConvert.SerializeObject(list);
                 File.WriteAllText(configfilename, insertstr);
+                SetParent(db.Name);
                 MessageBox.Show("配置成功");
+                this.Close();
             }
             else
             {
                 MessageBox.Show("配置文件不存在");
+            }
+        }
+
+        private void SetParent(string tname)
+        {
+            if (form1 != null)
+            {
+                TabControl cob = (TabControl)form1.Controls.Find("tabControl1", true)[0];
+                TabPage tpg=(TabPage)cob.Controls.Find("CreateTable", true)[0];
+                ComboBox com = (ComboBox)tpg.Controls.Find("Name", false)[0];
+                com.Items.Add(tname);
             }
         }
     }

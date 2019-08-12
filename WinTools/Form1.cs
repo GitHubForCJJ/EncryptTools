@@ -265,7 +265,32 @@ namespace WinTools
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            var name = ((ComboBox)sender).Text;
+            var configfilename = AppDomain.CurrentDomain.BaseDirectory + "datebaseconfig.txt";
+            if (File.Exists(configfilename))
+            {
+                var text = File.ReadAllText(configfilename);
+                var list = new List<Datebasemodel>();
+                if (text.Length > 0)
+                {
+                    try
+                    {
+                        list = JsonConvert.DeserializeObject<List<Datebasemodel>>(text);
+                    }
+                    catch { }
 
+                }
+                if (list.Count > 0 && !string.IsNullOrEmpty(name))
+                {
+                    var model = list.FirstOrDefault(x => x.Name == name);
+                    this.Dbip.Text = model?.Dbip;
+                    this.Dbport.Text = model?.Dbport;
+                    this.Dbtype.SelectedIndex = this.Dbtype.Items.IndexOf(model.Dbtype);
+                    this.Useraccount.Text = model?.Useraccount;
+                    this.Userpassword.Text = model?.Userpassword;
+
+                }
+            }
         }
 
         private void label10_Click(object sender, EventArgs e)
@@ -316,7 +341,7 @@ namespace WinTools
 
         private void addconfig_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
+            Form2 form2 = new Form2(this);
             form2.Show();
         }
 
@@ -346,22 +371,33 @@ namespace WinTools
         {
             if (string.IsNullOrEmpty(this.tableinfo.Text))
             {
-                MessageBox.Show("表信息为空");
-                return;
-            }
-            if (MessageBox.Show("是否立即执行？", "提示信息", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-            {
-                return;
-            }
-            var allinfo = this.tableinfo.Text.Split(new char[] { '\n'},StringSplitOptions.RemoveEmptyEntries).ToList();
+                case "Mysql":
+                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
+                    try
+                    {
+                        var a = new MySqlConnection(strconn);
+                        a.Open();
+                        a.Close();
+                        return a;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
 
-            var model = new Datebasemodel();
-            model.Dbtype = this.Dbtype.SelectedText;
-            model.Dbip = this.Dbip.Text;
-            model.Dbname=this.db
-
-            CreateTableLogic.CreateTble(allinfo, true, new Datebasemodel());
-
+                default:
+                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
+                    try
+                    {
+                        var a = new MySqlConnection(strconn);
+                        a.Open();
+                        a.Close();
+                        return a;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
 
         }
     }
