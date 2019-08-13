@@ -63,14 +63,27 @@
             this.JsonResRichText = new System.Windows.Forms.RichTextBox();
             this.JsonInRichText = new System.Windows.Forms.RichTextBox();
             this.CreateTable = new System.Windows.Forms.TabPage();
+            this.Dbname = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.Resultrichnew = new System.Windows.Forms.RichTextBox();
             this.Isdrop = new System.Windows.Forms.CheckBox();
             this.Createtablebtn = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.Resultrich = new System.Windows.Forms.RichTextBox();
             this.tableinfo = new System.Windows.Forms.RichTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.isdrop2 = new System.Windows.Forms.CheckBox();
+            this.excel2btn = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.excel2result = new System.Windows.Forms.RichTextBox();
+            this.treetablename = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.Tabletreeview = new System.Windows.Forms.TreeView();
+            this.Openfile = new System.Windows.Forms.Button();
+            this.Filename = new System.Windows.Forms.TextBox();
             this.addconfig = new System.Windows.Forms.Button();
             this.consql = new System.Windows.Forms.Button();
             this.Userpassword = new System.Windows.Forms.TextBox();
@@ -85,8 +98,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.Name = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.Dbname = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
             this.DES.SuspendLayout();
             this.MD5.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -96,6 +107,7 @@
             this.CreateTable.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // DES
@@ -232,9 +244,10 @@
             // 
             // OutRichDownText
             // 
+            this.OutRichDownText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OutRichDownText.Location = new System.Drawing.Point(539, 335);
             this.OutRichDownText.Name = "OutRichDownText";
-            this.OutRichDownText.Size = new System.Drawing.Size(434, 255);
+            this.OutRichDownText.Size = new System.Drawing.Size(559, 255);
             this.OutRichDownText.TabIndex = 3;
             this.OutRichDownText.Text = "";
             this.OutRichDownText.TextChanged += new System.EventHandler(this.OutRichDownText_TextChanged);
@@ -251,9 +264,10 @@
             // 
             // OutRichUpText
             // 
+            this.OutRichUpText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.OutRichUpText.Location = new System.Drawing.Point(539, 64);
             this.OutRichUpText.Name = "OutRichUpText";
-            this.OutRichUpText.Size = new System.Drawing.Size(434, 229);
+            this.OutRichUpText.Size = new System.Drawing.Size(559, 229);
             this.OutRichUpText.TabIndex = 1;
             this.OutRichUpText.Text = "";
             this.OutRichUpText.TextChanged += new System.EventHandler(this.OutRichUpText_TextChanged);
@@ -498,9 +512,27 @@
             this.CreateTable.Text = "建表";
             this.CreateTable.UseVisualStyleBackColor = true;
             // 
+            // Dbname
+            // 
+            this.Dbname.Location = new System.Drawing.Point(661, 24);
+            this.Dbname.Name = "Dbname";
+            this.Dbname.Size = new System.Drawing.Size(96, 25);
+            this.Dbname.TabIndex = 16;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("宋体", 9F);
+            this.label16.Location = new System.Drawing.Point(614, 31);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(41, 12);
+            this.label16.TabIndex = 15;
+            this.label16.Text = "数据库";
+            // 
             // tabControl2
             // 
-            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl2.Controls.Add(this.tabPage1);
             this.tabControl2.Controls.Add(this.tabPage3);
@@ -512,6 +544,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.Resultrichnew);
             this.tabPage1.Controls.Add(this.Isdrop);
             this.tabPage1.Controls.Add(this.Createtablebtn);
             this.tabPage1.Controls.Add(this.label15);
@@ -524,6 +557,14 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "方式一单表";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // Resultrichnew
+            // 
+            this.Resultrichnew.Location = new System.Drawing.Point(94, 385);
+            this.Resultrichnew.Name = "Resultrichnew";
+            this.Resultrichnew.Size = new System.Drawing.Size(828, 129);
+            this.Resultrichnew.TabIndex = 18;
+            this.Resultrichnew.Text = "";
             // 
             // Isdrop
             // 
@@ -562,7 +603,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Resultrich.Location = new System.Drawing.Point(94, 418);
             this.Resultrich.Name = "Resultrich";
-            this.Resultrich.Size = new System.Drawing.Size(842, 96);
+            this.Resultrich.Size = new System.Drawing.Size(842, 0);
             this.Resultrich.TabIndex = 1;
             this.Resultrich.Text = "";
             // 
@@ -573,12 +614,22 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableinfo.Location = new System.Drawing.Point(6, 6);
             this.tableinfo.Name = "tableinfo";
-            this.tableinfo.Size = new System.Drawing.Size(1126, 394);
+            this.tableinfo.Size = new System.Drawing.Size(1126, 357);
             this.tableinfo.TabIndex = 0;
             this.tableinfo.Text = "";
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.isdrop2);
+            this.tabPage3.Controls.Add(this.excel2btn);
+            this.tabPage3.Controls.Add(this.label19);
+            this.tabPage3.Controls.Add(this.excel2result);
+            this.tabPage3.Controls.Add(this.treetablename);
+            this.tabPage3.Controls.Add(this.label17);
+            this.tabPage3.Controls.Add(this.listView1);
+            this.tabPage3.Controls.Add(this.Tabletreeview);
+            this.tabPage3.Controls.Add(this.Openfile);
+            this.tabPage3.Controls.Add(this.Filename);
             this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -586,6 +637,102 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "方式二导入excel";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // isdrop2
+            // 
+            this.isdrop2.AutoSize = true;
+            this.isdrop2.Location = new System.Drawing.Point(884, 408);
+            this.isdrop2.Name = "isdrop2";
+            this.isdrop2.Size = new System.Drawing.Size(132, 23);
+            this.isdrop2.TabIndex = 9;
+            this.isdrop2.Text = "若表存在是否覆盖";
+            this.isdrop2.UseVisualStyleBackColor = true;
+            // 
+            // excel2btn
+            // 
+            this.excel2btn.Location = new System.Drawing.Point(1032, 395);
+            this.excel2btn.Name = "excel2btn";
+            this.excel2btn.Size = new System.Drawing.Size(75, 36);
+            this.excel2btn.TabIndex = 8;
+            this.excel2btn.Text = "执行所有";
+            this.excel2btn.UseVisualStyleBackColor = true;
+            this.excel2btn.Click += new System.EventHandler(this.excel2btn_Click);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(7, 413);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(74, 19);
+            this.label19.TabIndex = 7;
+            this.label19.Text = "执行结果：";
+            // 
+            // excel2result
+            // 
+            this.excel2result.Location = new System.Drawing.Point(6, 437);
+            this.excel2result.Name = "excel2result";
+            this.excel2result.Size = new System.Drawing.Size(1110, 77);
+            this.excel2result.TabIndex = 6;
+            this.excel2result.Text = "";
+            // 
+            // treetablename
+            // 
+            this.treetablename.AutoSize = true;
+            this.treetablename.Location = new System.Drawing.Point(271, 34);
+            this.treetablename.Name = "treetablename";
+            this.treetablename.Size = new System.Drawing.Size(100, 19);
+            this.treetablename.TabIndex = 5;
+            this.treetablename.Text = "点击检查表信息";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 34);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(74, 19);
+            this.label17.TabIndex = 4;
+            this.label17.Text = "所有表信息";
+            // 
+            // listView1
+            // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView1.Location = new System.Drawing.Point(272, 54);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(844, 335);
+            this.listView1.TabIndex = 3;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            // 
+            // Tabletreeview
+            // 
+            this.Tabletreeview.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Tabletreeview.Location = new System.Drawing.Point(6, 54);
+            this.Tabletreeview.Name = "Tabletreeview";
+            this.Tabletreeview.Size = new System.Drawing.Size(219, 335);
+            this.Tabletreeview.TabIndex = 2;
+            this.Tabletreeview.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.Tabletreeview_NodeMouseClick);
+            // 
+            // Openfile
+            // 
+            this.Openfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Openfile.Location = new System.Drawing.Point(1051, 6);
+            this.Openfile.Name = "Openfile";
+            this.Openfile.Size = new System.Drawing.Size(75, 25);
+            this.Openfile.TabIndex = 1;
+            this.Openfile.Text = "打开文件";
+            this.Openfile.UseVisualStyleBackColor = true;
+            this.Openfile.Click += new System.EventHandler(this.Openfile_Click);
+            // 
+            // Filename
+            // 
+            this.Filename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Filename.Location = new System.Drawing.Point(6, 6);
+            this.Filename.Name = "Filename";
+            this.Filename.Size = new System.Drawing.Size(953, 25);
+            this.Filename.TabIndex = 0;
             // 
             // addconfig
             // 
@@ -727,30 +874,12 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "配置";
             // 
-            // Dbname
-            // 
-            this.Dbname.Location = new System.Drawing.Point(661, 24);
-            this.Dbname.Name = "Dbname";
-            this.Dbname.Size = new System.Drawing.Size(96, 25);
-            this.Dbname.TabIndex = 16;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("宋体", 9F);
-            this.label16.Location = new System.Drawing.Point(614, 31);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(41, 12);
-            this.label16.TabIndex = 15;
-            this.label16.Text = "数据库";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1178, 650);
             this.Controls.Add(this.tabControl1);
-            this.Name = "Form1";
             this.Text = "常用开发工具";
             this.DES.ResumeLayout(false);
             this.DES.PerformLayout();
@@ -767,6 +896,8 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -832,6 +963,17 @@
         private System.Windows.Forms.CheckBox Isdrop;
         private System.Windows.Forms.TextBox Dbname;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox Filename;
+        private System.Windows.Forms.Button Openfile;
+        private System.Windows.Forms.TreeView Tabletreeview;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.RichTextBox Resultrichnew;
+        private System.Windows.Forms.Label treetablename;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.RichTextBox excel2result;
+        private System.Windows.Forms.Button excel2btn;
+        private System.Windows.Forms.CheckBox isdrop2;
     }
 }
 

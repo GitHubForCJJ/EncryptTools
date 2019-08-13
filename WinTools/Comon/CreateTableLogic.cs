@@ -21,8 +21,8 @@ namespace WinTools.Comon
         /// <returns></returns>
         public static Result CreateTble(List<string> alldata, bool isdrop, Datebasemodel model)
         {
-            var res = new Result();
-            var tableinfo = new TableInfo() {TableColumns=new List<TableColumn>() };
+            var res = new Result() { IsSucceed=false};
+            var tableinfo = new TableInfo() { TableColumns = new List<TableColumn>() };
 
             var index = 0;
             foreach (var item in alldata)
@@ -39,13 +39,13 @@ namespace WinTools.Comon
                 {
                     var col = new TableColumn();
                     col.ColName = colinfo[0] ?? "";
-                    col.ColType = GetDbtype(colinfo[1] ?? "");
-                    col.ColLength = colinfo[1] != "varchar" ? "0" : string.IsNullOrEmpty(colinfo[2]) ? "512" : colinfo[2];
+                    col.ColType = colinfo[1] ?? "";
+                    col.ColLength = colinfo[2].Toint();
                     col.ColDefault = colinfo[3];
-                    col.ColPrimary = colinfo[4];
-                    col.ColEmpty = colinfo[5];
+                    col.ColPrimary = colinfo[4].Tobool();
+                    col.ColEmpty = colinfo[5].Tobool();
                     col.ColSymbol = colinfo[6];
-                    col.ColAuto = colinfo[7];
+                    col.ColAuto = colinfo[7].Tobool();
                     col.ColRemart = colinfo[8];
                     tableinfo.TableColumns.Add(col);
                 }
@@ -58,13 +58,21 @@ namespace WinTools.Comon
             {
                 using (var db = GetConnByType(model))
                 {
-                    var dbcom = db.CreateCommand();
-                    var sql = $"SELECT count(1) FROM information_schema.TABLES WHERE table_name ='{tableinfo.TableName}' and table_schema='{model.Dbname}';";
-                    dbcom.CommandText = sql;
-                    var iscunzai = dbcom.ExecuteScalar();
+                    db.Open();
+                    var iscunzai = IsTableExist(model, db,tableinfo);
+                    if (!isdrop && iscunzai)
+                    {
+                        res.IsSucceed = false;
+                        res.Message = $"已存在{tableinfo.TableName}表";
+                        return res;
+                    }
+                    res = Ctable(tableinfo, db);
+                    //再次查询获取建表结果
+                    res.IsSucceed= IsTableExist(model, db,tableinfo);
+                    res.Message = res.IsSucceed ? $"创建{tableinfo.TableName}成功，共{tableinfo.TableColumns.Count}个字段" : $"创建{tableinfo.TableName}失败";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -72,16 +80,145 @@ namespace WinTools.Comon
 
             return res;
         }
-        private static Result Ctable(TableInfo tableInfo,DbConnection db)
+        private static bool IsTableExist(Datebasemodel model,DbConnection db, TableInfo info)
         {
-            var res =new Result();
+            bool res = false;
+            try
+            {
+                var dbcom = db.CreateCommand();
+                var sql = $"SELECT count(1) FROM information_schema.TABLES WHERE table_name ='{info.TableName}' and table_schema='{model.Dbname}';";
+                dbcom.CommandText = sql;
+                var iscunzai = dbcom.ExecuteScalar().Toint();
+                res = iscunzai > 0;
+            }
+            catch(Exception ex)
+            {
+                
+            }
+            return res;
+        }
+        /// <summary>
+        /// 建表操作
+        /// </summary>
+        /// <param name="tableInfo"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        private static Result Ctable(TableInfo tableInfo, DbConnection db)
+        {
+            var res = new Result();
             var str = new StringBuilder();
-            str.Append("Create table");
+            str.Append($"drop table if exists {tableInfo.TableName};");
+            str.Append($"Create table `{tableInfo.TableName}`(");
+            //只考虑了单主键
+            string primarykey = "KID";
+            foreach (var item in tableInfo.TableColumns)
+            {
+                var ispri = item.ColPrimary.Tobool();
+                var isnull = item.ColEmpty ?  "": "NOT NULL";
+                var isauto = item.ColAuto ?  "AUTO_INCREMENT":"";
+                if (ispri)
+                {
+                    var aa = $" `{item.ColName}` {Getcoltype(item.ColType, item.ColLength)} {isnull} {isauto}  COMMENT '{item.ColRemart}' ,";
+                    str.Append(aa);
+                }
+                else
+                {
+                    var aa = $" `{item.ColName}` {Getcoltype(item.ColType, item.ColLength)} {isnull} {isauto} {Getcoldefault(item.ColType, item.ColDefault)} COMMENT '{item.ColRemart}' ,";
+                    str.Append(aa);
+                }
+
+
+            }
+            str.Append($"PRIMARY KEY(`{primarykey}`) ) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COMMENT='{tableInfo.TableRemark}';");
+
+            var a = str.ToString();
+
+
+            var com = db.CreateCommand();
+            com.Connection = db;
+            com.CommandText = a;
+            var t = com.ExecuteNonQuery();
+            //res.IsSucceed = t > 0;
+            //res.Message = t.ToString();
             return res;
 
         }
+        /// <summary>
+        /// 获取数据表字段的default值
+        /// </summary>
+        /// <param name="coltype"></param>
+        /// <param name="defdata"></param>
+        /// <returns></returns>
+        private static string Getcoldefault(string coltype, string defdata)
+        {
+            coltype = coltype.ToLower();
+            var res = "";
+            switch (coltype)
+            {
+                case "int":
+                    res = $"DEFAULT  0";
+                    break;
+                case "varchar":
+                    res = $"DEFAULT '{defdata}'";
+                    break;
+                case "datetime":
+                    res = $"DEFAULT '1970-01-01 08:00:00'";
+                    break;
+                case "timestamp":
+                    res = $"DEFAULT CURRENT_TIMESTAMP ";
+                    break;
+                case "tinyint":
+                    res = string.IsNullOrEmpty(defdata)?"DEFAULT 0":$"DEFAULT {defdata}";
+                    break;
+                default:
+                    res = $"DEFAULT '{defdata}'";
+                    break;
+            }
+            return res;
+        }
+        /// <summary>
+        /// 获取数据表的类型
+        /// </summary>
+        /// <param name="coltype"></param>
+        /// <param name="lenth"></param>
+        /// <returns></returns>
+        private static string Getcoltype(string coltype, int lenth)
+        {
+            coltype = coltype.ToLower();
+            var res = "";
+            switch (coltype)
+            {
+                case "int":
+                    res = lenth > 0 ? $"int({ lenth})" : "int";
+                    break;
+                case "varchar":
+                    res = lenth > 0 ? $"varchar({ lenth})" : "varchar(64)";
+                    break;
+                case "datetime":
+                    res = "datetime";
+                    break;
+                case "decimal":
+                    coltype= "decimal(19,2)";
+                    break;
+                case "tinyint":
+                    res = lenth > 0 ? $"tinyint({ lenth})" : "tinyint";
+                    break;
+                default:
+                    if (lenth > 0)
+                    {
+                        res = $"{coltype}({lenth})";
+                    }
+                    else
+                    {
+                        res = coltype;
+                    }
+                    break;
+            }
+            return res;
+        }
         private static string GetDbtype(string type)
         {
+            type = type.ToLower();
             switch (type)
             {
                 case "datetime":
@@ -89,7 +226,7 @@ namespace WinTools.Comon
                 case "int":
                     return "int";
                 case "varchar":
-                    return "string";
+                    return "varchar";
                 case "timestamp":
                     return "DateTime";
                 case "tinyint":
@@ -103,7 +240,7 @@ namespace WinTools.Comon
                 case "decimal":
                     return "decimal";
                 default:
-                    return "string";
+                    return "varchar";
             }
         }
 

@@ -13,6 +13,8 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data.Common;
 using WinTools.Comon;
+using ExcelHelper;
+using FastDev.Common.Code;
 
 namespace WinTools
 {
@@ -49,11 +51,14 @@ namespace WinTools
                         this.Dbport.Text = choose.Dbport;
                         this.Useraccount.Text = choose.Useraccount;
                         this.Userpassword.Text = choose.Userpassword;
+                        this.Dbname.Text = choose.Dbname;
                         this.Name.SelectedIndex = this.Name.Items.IndexOf(choose.Name);
                     }
                 }
             }
 
+            this.Isdrop.Checked = true;
+            this.isdrop2.Checked = true;
         }
 
         private void MD5encrypt_Click(object sender, EventArgs e)
@@ -288,7 +293,7 @@ namespace WinTools
                     this.Dbtype.SelectedIndex = this.Dbtype.Items.IndexOf(model.Dbtype);
                     this.Useraccount.Text = model?.Useraccount;
                     this.Userpassword.Text = model?.Userpassword;
-
+                    this.Dbname.Text = model?.Dbname;
                 }
             }
         }
@@ -357,11 +362,11 @@ namespace WinTools
             DbConnection conn = CreateTableLogic.GetConnByType(model);
             if (conn == null)
             {
-                MessageBox.Show("链接失败");
+                MessageBox.Show("连接失败");
             }
             else
             {
-                MessageBox.Show("链接成功");
+                MessageBox.Show("连接成功");
             }
         }
 
@@ -369,36 +374,193 @@ namespace WinTools
 
         private void Createtablebtn_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(this.tableinfo.Text))
+            var db = new Datebasemodel();
+            db.Dbip = Dbip.Text;
+            db.Dbtype = Dbtype.SelectedItem.ToString();
+            db.Dbname = Dbname.Text;
+            db.Dbport = Dbport.Text;
+            db.Useraccount = Useraccount.Text;
+            db.Userpassword = Userpassword.Text;
+            db.Name = Name.Text;
+
+            var alldata = this.tableinfo.Text.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)?.ToList();
+            var res = CreateTableLogic.CreateTble(alldata, this.Isdrop.Checked, db);
+            if (res.IsSucceed)
             {
-                case "Mysql":
-                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
-                    try
-                    {
-                        var a = new MySqlConnection(strconn);
-                        a.Open();
-                        a.Close();
-                        return a;
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+                this.Resultrichnew.Text = res.Message;
+            }
+            else
+            {
+                this.Resultrichnew.Text = "创建失败";
+            }
+        }
 
-                default:
-                    strconn = $"server={model.Dbip};port={model.Dbport}; user id={model.Useraccount}; password={model.Userpassword};database={model.Dbname}; pooling=false;CharSet=utf8;Allow Zero Datetime=True";
-                    try
-                    {
-                        var a = new MySqlConnection(strconn);
-                        a.Open();
-                        a.Close();
-                        return a;
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+        private void Openfile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "Excel文件(*.xlsx)|*.xlsx|Excel97(*.xls)|*.xls";
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                this.Filename.Text = open.FileName;
+                LoadExcelFile(open.FileName);
+            }
+        }
+        private void LoadExcelFile(string filename)
+        {
+            var res = NpoiHelper.InputExcelTableByNpoi(filename, out Dictionary<string, string> tabledic);
+            dic = tabledic;
+            ds = res;
+            LoadTreeView(tabledic);
+        }
+        /// <summary>
+        /// 表名数据，加载treeview时赋值
+        /// </summary>
+        private Dictionary<string, string> dic;
+        /// <summary>
+        /// 表列数据加载treeview时赋值
+        /// </summary>
+        private Result<DataSet> ds;
+        //根node
+        private TreeNode node;
+        private void LoadTreeView(Dictionary<string, string> dic)
+        {
+            this.Tabletreeview.Nodes.Clear();
+            this.Tabletreeview.CheckBoxes = true;
+            node = new TreeNode(alltablenodekey);
+            this.Tabletreeview.Nodes.Add(node);
+            foreach (var item in dic)
+            {
+                var subnode = new TreeNode();
+                subnode.Text = item.Key;
+                subnode.ToolTipText = item.Value;
+                node.Nodes.Add(subnode);
+            }
+            node.Checked = true;
+            foreach (TreeNode item in node.Nodes)
+            {
+                item.Checked = true;
+            }
+            node.ExpandAll();
 
+        }
+
+
+        private void Tabletreeview_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            var tablename = e.Node.Text;
+            if (tablename == alltablenodekey)
+            {
+                return;
+            }
+            if (this.treetablename.Text == tablename)
+            {
+                return;
+            }
+            this.treetablename.Text = tablename;
+            DataTable dt = null;
+            if (dic.ContainsKey(tablename))
+            {
+                dt = ds.Data.Tables[tablename];
+            }
+            if (dt == null)
+            {
+                MessageBox.Show("错误，不存在该表数据");
+                return;
+            }
+            listView1.View = View.Details;
+            listView1.GridLines = true;//显示网格线
+            listView1.Items.Clear();//所有的项
+            listView1.Columns.Clear();//标题
+            listView1.FullRowSelect = true;
+            for (var i = 0; i < dt.Columns.Count; i++)
+            {
+                this.listView1.Columns.Add(dt.Columns[i].Caption);
+            }
+            for (var i = 0; i < dt.Rows.Count; i++)
+            {
+                ListViewItem item = new ListViewItem(dt.Rows[i][0].ToString());
+                for (var j = 1; j < dt.Columns.Count; j++)
+                {
+                    item.SubItems.Add(dt.Rows[i][j].ToString());
+                }
+                this.listView1.Items.Add(item);
+            }
+            listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);//调整列的宽度  
+
+            //全选反选
+            SelectAll(e);
+        }
+
+        //全选反选
+        private void SelectAll(TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Text == alltablenodekey)
+            {
+                foreach (TreeNode item in this.Tabletreeview.Nodes)
+                {
+                    item.Checked = e.Node.Checked;
+                }
+            }
+        }
+        private string alltablenodekey = "所有表";
+
+        private void excel2btn_Click(object sender, EventArgs e)
+        {
+            var inputlist = new Dictionary<string, List<string>>();
+            for (var i = 0; i < node.Nodes.Count; i++)
+            {
+      
+                var curnode = node.Nodes[i];
+
+                var str = new StringBuilder();
+                var dicitem = dic[curnode.Text];
+                if (curnode.Checked)
+                {
+                    var alldata = new List<string>();
+         
+
+                    var cols = ds.Data.Tables[curnode.Text];
+                    //处理表名
+                    str.Append($"{curnode.Text}\t{dicitem}");
+                    str.Append("\n");
+                    //处理header
+                    foreach (DataColumn item in cols.Columns)
+                    {
+                        str.Append($"{item.Caption}\t");
+                    }                   
+                    str.Append("\n");
+                    //处理行
+                    foreach(DataRow item in cols.Rows)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        for(var p = 0; p < cols.Columns.Count; p++)
+                        {
+                            sb.Append($"{item[p].ToString()}\t");
+                        }
+                        sb.Append("\n");
+                        str.Append(sb.ToString());
+                    }
+                    alldata = str.ToString().Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    inputlist.Add(curnode.Text, alldata);
+                }
+            }
+            var db = new Datebasemodel();
+            db.Dbip = Dbip.Text;
+            db.Dbtype = Dbtype.SelectedItem.ToString();
+            db.Dbname = Dbname.Text;
+            db.Dbport = Dbport.Text;
+            db.Useraccount = Useraccount.Text;
+            db.Userpassword = Userpassword.Text;
+            db.Name = Name.Text;
+
+            //结果str
+            StringBuilder resstr = new StringBuilder();
+            foreach (var item in inputlist)
+            {
+               var res= CreateTableLogic.CreateTble(item.Value, true, db);
+                resstr.AppendLine($"{item.Key}表:{res.Message}");
+            }
+            this.excel2result.Text = resstr.ToString();
         }
     }
 }

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comon\CreateTableLogic.cs" />
+    <Compile Include="Comon\StringExtension.cs" />
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,6 +125,12 @@
     <Content Include="datebaseconfig.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExcelHelper\ExcelHelper.csproj">
+      <Project>{e512db78-2058-4aee-a0ef-0c2ce71bca7c}</Project>
+      <Name>ExcelHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
